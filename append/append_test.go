@@ -1,6 +1,7 @@
 package append
 
 import (
+	"fmt"
 	"github.com/edsrzf/mmap-go"
 	"os"
 	"testing"
@@ -58,6 +59,7 @@ func BenchmarkAppendMmap(b *testing.B) {
 			f, err := os.OpenFile("data_mmap.txt", os.O_RDWR, 0644)
 			check(err)
 
+			fmt.Println("****", length, offset)
 			mapd, err := mmap.MapRegion(f, length, mmap.RDWR, 0, offset)
 			check(err)
 
