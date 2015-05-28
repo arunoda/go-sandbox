@@ -42,6 +42,8 @@ func BenchmarkAppendMmap(b *testing.B) {
 	var fileData []byte
 	var file *os.File
 	var offset int64 = 0
+	// in linux, offset needs to be multiples of the pagesize
+	// that's why we are doint this
 	var length int = syscall.Getpagesize() * 10
 
 	var position int64 = 0
