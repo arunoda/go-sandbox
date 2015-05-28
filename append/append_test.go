@@ -1,6 +1,7 @@
 package append
 
 import (
+	"fmt"
 	"os"
 	"syscall"
 	"testing"
@@ -42,7 +43,9 @@ func BenchmarkAppendMmap(b *testing.B) {
 	var fileData []byte
 	var file *os.File
 	var offset int64 = 0
-	var length int = 10000
+	var length int = syscall.Getpagesize() * 10
+
+	fmt.Println("***", length)
 
 	var position int64 = 0
 	for n := 0; n < b.N; n++ {
