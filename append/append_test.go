@@ -1,9 +1,8 @@
 package append
 
 import (
-	"fmt"
-	"github.com/edsrzf/mmap-go"
 	"os"
+	"syscall"
 	"testing"
 )
 
@@ -40,7 +39,7 @@ func BenchmarkAppendFile(b *testing.B) {
 
 func BenchmarkAppendMmap(b *testing.B) {
 
-	var fileData mmap.MMap
+	var fileData []byte
 	var file *os.File
 	var offset int64 = 0
 	var length int = 10000
@@ -50,7 +49,7 @@ func BenchmarkAppendMmap(b *testing.B) {
 		name := "Hello\n"
 		if position == 0 || position+int64(len(name)) >= int64(length) {
 			if fileData != nil {
-				fileData.Unmap()
+				syscall.Munmap(fileData)
 				file.Close()
 			}
 
@@ -59,8 +58,7 @@ func BenchmarkAppendMmap(b *testing.B) {
 			f, err := os.OpenFile("data_mmap.txt", os.O_RDWR, 0644)
 			check(err)
 
-			fmt.Println("****", length, offset)
-			mapd, err := mmap.MapRegion(f, length, mmap.RDWR, 0, offset)
+			mapd, err := syscall.Mmap(int(f.Fd()), offset, length, syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_SHARED)
 			check(err)
 
 			fileData = mapd

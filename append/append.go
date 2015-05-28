@@ -1,7 +1,6 @@
 package append
 
 import (
-	"github.com/edsrzf/mmap-go"
 	"os"
 )
 
@@ -18,7 +17,7 @@ func AppendFile(f os.File, name string, position int64) int64 {
 	return position + int64(len(nameBytes))
 }
 
-func AppendMmap(fileData mmap.MMap, name string, position int64) int64 {
+func AppendMmap(fileData []byte, name string, position int64) int64 {
 	nameBytes := []byte(name)
 	for lc, val := range nameBytes {
 		fileData[position+int64(lc)] = val
