@@ -38,10 +38,9 @@ func BenchmarkAppendFile(b *testing.B) {
 }
 
 func BenchmarkAppendMmap(b *testing.B) {
-	f, err := os.OpenFile("data_mmap.txt", os.O_RDWR, 0644)
-	check(err)
 
 	var fileData mmap.MMap
+	var file *os.File
 	var offset int64 = 0
 	var length int = 10000
 
@@ -51,13 +50,19 @@ func BenchmarkAppendMmap(b *testing.B) {
 		if position == 0 || position+int64(len(name)) >= int64(length) {
 			if fileData != nil {
 				fileData.Unmap()
+				file.Close()
 			}
 
 			position = 0
+
+			f, err := os.OpenFile("data_mmap.txt", os.O_RDWR, 0644)
+			check(err)
+
 			mapd, err := mmap.MapRegion(f, length, mmap.RDWR, 0, offset)
 			check(err)
 
 			fileData = mapd
+			file = f
 			offset += int64(length)
 		}
 
