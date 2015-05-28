@@ -19,10 +19,12 @@ func TestGenFile(t *testing.T) {
 			offset := i * 1024
 			f.WriteAt(b, int64(offset))
 		}
+		f.Close()
 	}
 
 	f, err = os.OpenFile("data.txt", os.O_RDWR|os.O_CREATE, 0644)
 	check(err)
+	f.Close()
 }
 
 func BenchmarkAppendFile(b *testing.B) {
