@@ -1,0 +1,34 @@
+// package main
+
+// import (
+// 	"fmt"
+// 	"github.com/edsrzf/mmap-go"
+// 	"os"
+// )
+
+// func check(err error) {
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// }
+
+// func main() {
+// 	f, err := os.OpenFile("data.txt", os.O_RDWR, 0644)
+// 	check(err)
+
+// 	fileData, err := mmap.Map(f, mmap.RDWR, 0)
+// 	check(err)
+
+// 	name := "Arunoda Susiripala"
+// 	nameBytes := []byte(name)
+
+// 	basePos := 90000
+// 	// for lc, value := range nameBytes {
+// 	// 	pos := basePos + lc
+// 	// 	fileData[pos] = value
+// 	// }
+// 	// fileData.Flush()
+
+// 	name2 := string(fileData[basePos : basePos+len(nameBytes)])
+// 	fmt.Println(name2)
+// }
